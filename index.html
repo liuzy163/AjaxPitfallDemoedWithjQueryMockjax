@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<!--The switch widget html and css3 code come from https://proto.io/freebies/onoff/-->
+<html>
+<head>
+<script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
+<script src="js/jquery.mockjax.js"></script>
+<link rel="stylesheet" type="text/css" href="css/onOffSwitch.css">
+
+<script>
+$.mockjax({
+  url: "/myServer/myApi",
+  data:{onOff:true},
+  responseTime: Math.floor(Math.random()*1000),
+  responseText: "Light is ON",
+  status: 200
+});
+
+$.mockjax({
+  url: "/myServer/myApi",
+  data:{onOff:false},
+  responseTime: Math.floor(Math.random()*4000),
+  responseText: "Light is OFF",
+  status: 200
+});
+
+function flipSwitch(chkbox) {
+    $.ajax({
+        	url: "/myServer/myApi",
+        	data: {"onOff":chkbox.checked}, 
+        	type: "POST",
+        	async:true,   	
+        	success: function(data) { 
+        		$("#result").text(data);   		
+        	},
+        	error: function(jqXHR, textStatus, errorThrown){
+        		alert("Error occurred");    		
+            }
+        });
+}
+</script>
+</head>
+<body>
+<div class="onoffswitch">
+    <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" onclick="flipSwitch(this);" checked>
+    <label class="onoffswitch-label" for="myonoffswitch">
+        <span class="onoffswitch-inner"></span>
+        <span class="onoffswitch-switch"></span>
+    </label>
+</div>
+<p><p>Server says: <p><span id="result"></span> 
+</div>
+</body>
+</html>
